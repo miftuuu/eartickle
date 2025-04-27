@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout – Ear Tickle</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .checkout-container {max-width:1200px;background:none;box-shadow:none;padding:0;}
+    html {font-size:110%;}
+    h2 {font-size:2rem;}
+    h3 {font-size:1.25rem;}
+    label, input, textarea, fieldset, legend, .note, .total, #deliveryRow {font-size:1.05rem;}
+    .checkout-flex {display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem;}
+    .summary-block, .form-block {background:var(--white);border:1px solid var(--brown-300);border-radius:12px;padding:1.5rem;}
+    .order-items img {border-radius:6px;width:60px;height:60px;object-fit:cover;}
+    .hidden {display:none;}
+  </style>
+</head>
+
+<body>
+<header>
+  <img src="logo.jpeg" alt="Ear Tickle logo" class="logo" />
+  <h1>Ear Tickle</h1>
+</header>
+
+<div class="checkout-container checkout-flex">
+  <!-- LEFT : Order Summary -->
+  <div class="summary-block">
+    <h2 style="text-align:center;font-family:'Playfair Display',serif; margin-bottom:1rem;">Your Order</h2>
+    <ul class="order-items" id="orderItems"></ul>
+    <p id="deliveryRow" style="text-align:right;margin:.3rem 0;">Delivery: <strong>৳<span id="deliveryAmount">0</span></strong></p>
+    <p class="total" style="text-align:right;">Grand Total: <strong id="orderTotal">৳0</strong></p>
+    <p class="note" style="font-size:.9rem;margin-top:.4rem;color:var(--brown-900);">
+      <strong>Delivery Rates:<br></strong>
+      · ৳80 inside Dhaka<br>· ৳120 elsewhere in Bangladesh<br><br>
+      <em>Outside-Dhaka delivery fee must be paid in advance to confirm the order.</em>
+    </p>
+  </div>
+
+  <!-- RIGHT : Customer Form -->
+  <div class="form-block">
+    <form action="https://formsubmit.co/miftajannah496@gmail.com" method="POST">
+      <input type="hidden" name="_next" value="https://yourgithubusername.github.io/confirmation.html">
+      
+      <h3 style="font-family:'Playfair Display',serif;">Delivery Details</h3>
+      
+      <label>Name
+        <input type="text" name="custName" placeholder="Full Name" required />
+      </label><br><br>
+
+      <label>Phone Number
+        <input type="text" name="custPhone" placeholder="e.g. 017xxxxxxxx" required />
+      </label><br><br>
+
+      <h4 style="font-family:'Playfair Display',serif;">Address</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
+        <label>Flat / Unit
+          <input type="text" name="addrFlat" placeholder="4B" required />
+        </label>
+        <label>House Name / No.
+          <input type="text" name="addrHouse" placeholder="Twilight" required />
+        </label>
+        <label>Street
+          <input type="text" name="addrStreet" placeholder="Oak Street" required />
+        </label>
+        <label>Area
+          <input type="text" name="addrArea" placeholder="Banani" required />
+        </label>
+        <label>City
+          <input type="text" name="addrCity" placeholder="Dhaka" required />
+        </label>
+        <label>Additional Notes
+          <input type="text" name="additionalNotes" placeholder="e.g. Leave at gate" />
+        </label>
+      </div><br>
+
+      <fieldset style="margin-top:1rem;">
+        <legend style="font-family:'Playfair Display',serif;">Payment Method</legend>
+        <label><input type="radio" name="payment" value="Cash on Delivery" checked /> Cash on Delivery</label><br />
+        <label><input type="radio" name="payment" value="bKash" /> bKash (01979126496)</label>
+      </fieldset><br>
+
+      <div id="bkashInfo" class="hidden" style="margin:1rem 0; padding:1rem; background:var(--brown-100); border-left:4px solid var(--brown-500);">
+        <p style="margin:0 0 .5rem; font-weight:500;">Send <strong>৳<span id="bkashDue">0</span></strong> to <strong>01979126496</strong> via bKash “Send Money”.</p>
+        <label>Transaction ID
+          <input type="text" name="trxId" placeholder="bKash Txn ID" />
+        </label>
+      </div>
+
+      <button class="btn" type="submit" style="width:100%; margin-top:1rem;">Place Order</button>
+    </form>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> Ear Tickle</footer>
+
+<script>
+  const CART_KEY = 'earTickleCart';
+  const cart = JSON.parse(localStorage.getItem(CART_KEY) || '{}');
+  const list = document.getElementById('orderItems');
+  let subtotal = 0;
+
+  Object.values(cart).forEach(item => {
+    subtotal += item.price * item.qty;
+    const li = document.createElement('li');
+    li.style.cssText = 'display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;';
+    li.innerHTML = `<img src="${item.img}" alt="${item.name}"> <span style="flex:1;">${item.name} ×${item.qty}</span><strong>৳${item.price * item.qty}</strong>`;
+    list.appendChild(li);
+  });
+
+  if (subtotal === 0) {
+    alert('Your cart is empty, redirecting to shop');
+    window.location.href = 'index.html';
+  }
+
+  const deliveryRow = document.getElementById('deliveryRow');
+  const deliveryAmtSpan = document.getElementById('deliveryAmount');
+  const totalEl = document.getElementById('orderTotal');
+  const bkashDueEl = document.getElementById('bkashDue');
+
+  function computeDelivery(cityVal){
+    return cityVal.toLowerCase() === 'dhaka' ? 80 : 120;
+  }
+
+  function updateTotals(){
+    const cityVal = document.querySelector('input[name="addrCity"]').value.trim();
+    const delivery = cityVal ? computeDelivery(cityVal) : 0;
+    deliveryRow.style.display = delivery ? 'block' : 'none';
+    deliveryAmtSpan.textContent = delivery;
+    totalEl.textContent = '৳' + (subtotal + delivery);
+    bkashDueEl.textContent = subtotal + delivery;
+  }
+
+  document.querySelector('input[name="addrCity"]').addEventListener('input', updateTotals);
+  updateTotals();
+
+  /* Payment toggle */
+  const bkashInfo = document.getElementById('bkashInfo');
+  document.querySelectorAll('input[name="payment"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      bkashInfo.classList[radio.value === 'bKash' ? 'remove' : 'add']('hidden');
+    });
+  });
+
+  /* Set year */
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

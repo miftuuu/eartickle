@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rings – Ear Tickle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- header reused from main site -->
+  <header>
+    <img src="logo.jpeg" alt="Ear Tickle logo" class="logo" />
+    <h1>Ear Tickle</h1>
+    <div class="cart-icon" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></div>
+  </header>
+
+  <main style="padding-top:2rem;">
+    <h2 style="text-align:center;font-family:'Playfair Display',serif;">Rings</h2>
+    <!-- the grid is rendered into this div -->
+    <div id="productGrid" style="margin-top:2rem;"></div>
+  </main>
+
+  <footer>© <span id="year"></span> Ear Tickle</footer>
+
+  <!-- 1️⃣  product list (must come first) -->
+  <script defer src="rings.js"></script>
+  <!-- 2️⃣  grid renderer -->
+  <script defer src="rings_page.js"></script>
+  <!-- 3️⃣  cart logic (so “Add to Cart” works) -->
+  <script defer src="cart.js"></script>
+  <div class="cart-icon" id="cartBtn">…</div>
+
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="btn" id="closeCart">✖</button>
+  </div>
+
+  <div class="cart-items" id="cartItems"></div>
+
+  <div class="cart-footer">
+    <div class="total"><span>Total:</span><span id="cartTotal">৳0</span></div>
+    <a href="checkout.html" class="btn" id="checkoutBtn">Checkout</a>
+  </div>
+</aside>
+
+  <script>
+    // just for the © year
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('#year').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>

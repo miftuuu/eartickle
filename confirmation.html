@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Confirmed – Ear Tickle</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body{display:flex;justify-content:center;align-items:center;min-height:100vh;text-align:center;}
+    .card{background:var(--white);border:1px solid var(--brown-300);border-radius:12px;padding:2rem;max-width:500px;}
+    h1{font-family:'Playfair Display',serif;margin-bottom:1rem;}
+    p{font-size:1.1rem;line-height:1.5;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Wohoo!</h1>
+    <p id="msg"></p>
+    <p style="margin-top:1.5rem;">If you have any queries, please leave us a message on our social media pages.</p>
+    <a href="index.html" class="btn" style="margin-top:1.5rem; display:inline-block;">Back to Home</a>
+  </div>
+
+  <script>
+    const name = sessionStorage.getItem('etCustomerName') || 'Valued Customer';
+    document.getElementById('msg').innerHTML = `Dear <strong>${name}</strong>,<br> Your order has been successfully confirmed. We're so excited for you to try our products. Thank you for shopping with us.`;
+    // optional: remove name from storage
+    sessionStorage.removeItem('etCustomerName');
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ear Tickle – Shop</title>
+
+  <!-- main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- page-specific tweaks -->
+  <style>
+    header .logo{height:48px;margin-right:.75rem;}
+
+    /* — category grid: 2 cards per row — */
+    .category-grid{
+      display:grid;
+      gap:2rem;
+      padding:3rem 1rem;
+      grid-template-columns:repeat(2,1fr);
+    }
+    @media(max-width:600px){
+      .category-grid{grid-template-columns:1fr;}
+    }
+
+    .category-card{
+      position:relative;overflow:hidden;border-radius:12px;text-decoration:none;
+      color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;text-align:center;
+      height:240px;
+    }
+    @media(max-width:600px){.category-card{height:220px;}}
+    .category-card img{width:100%;height:100%;object-fit:cover;transition:transform .35s;}
+    .category-card span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);}
+    .category-card:hover img{transform:scale(1.08);}
+  </style>
+</head>
+<body>
+  <!-- ───────── Header ───────── -->
+  <header>
+    <img src="logo.jpeg" alt="Ear Tickle logo" class="logo" />
+    <h1>Ear Tickle</h1>
+    <div class="cart-icon" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></div>
+  </header>
+
+  <!-- ───────── Hero ───────── -->
+  <section class="hero"
+           style="background:url('download.jpg') center/cover no-repeat;
+                  min-height:calc(100vh - 68px);        /* 68 px header offset */
+                  display:flex;flex-direction:column;
+                  justify-content:center;align-items:flex-end;text-align:right;
+                  color:var(--brown-900);padding-right:12%;">
+    <h2>Welcome to Ear Tickle</h2>
+    <p>Jewellery that whispers elegance.</p>
+    <a href="#categories" class="btn hero-btn" style="align-self:flex-end;">Browse Categories</a>
+  </section>
+
+  <!-- ───────── Categories ───────── -->
+  <main id="categories">
+    <div class="category-grid">
+      <a href="earrings.html"  class="category-card"><img src="earrings.jpg"  alt="Earrings"><span>Earrings</span></a>
+      <a href="necklaces.html" class="category-card"><img src="necklace.png"  alt="Necklaces"><span>Necklaces</span></a>
+      <a href="bracelets.html" class="category-card"><img src="bracelet.jpg"  alt="Bracelets"><span>Bracelets</span></a>
+      <a href="rings.html"     class="category-card"><img src="ring.png"      alt="Finger Rings"><span>Finger Rings</span></a>
+    </div>
+  </main>
+
+  <!-- optional dynamic grid -->
+  <div id="productGrid"></div>
+
+  <!-- ───────── Cart Drawer ───────── -->
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header"><h2>Your Cart</h2><button class="btn" id="closeCart">✖</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total"><span>Total:</span><span id="cartTotal">৳0</span></div>
+      <a href="checkout.html" class="btn" id="checkoutBtn">Checkout</a>
+    </div>
+  </aside>
+
+  <footer>© <span id="year"></span> Ear Tickle – Handcrafted Jewelry</footer>
+
+  <script defer src="product.js"></script>
+  <script defer src="cart.js"></script>
+</body>
+</html>
