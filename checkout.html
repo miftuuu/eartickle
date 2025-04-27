@@ -41,12 +41,14 @@
   <!-- RIGHT : Customer Form -->
   <div class="form-block">
     <form action="https://formsubmit.co/miftajannah496@gmail.com" method="POST">
-      <input type="hidden" name="_next" value="https://github.com/miftuuu/eartickle.git">
+      <input type="hidden" name="_next" value="https://miftuuu.github.io/eartickle/confirmation.html">
+      <input type="hidden" name="orderId" id="orderId">
+      <input type="hidden" name="orderDetails" id="orderDetails">
       
       <h3 style="font-family:'Playfair Display',serif;">Delivery Details</h3>
       
       <label>Name
-        <input type="text" name="custName" placeholder="Full Name" required />
+        <input type="text" name="custName" id="custName" placeholder="Full Name" required />
       </label><br><br>
 
       <label>Phone Number
@@ -135,7 +137,6 @@
   document.querySelector('input[name="addrCity"]').addEventListener('input', updateTotals);
   updateTotals();
 
-  /* Payment toggle */
   const bkashInfo = document.getElementById('bkashInfo');
   document.querySelectorAll('input[name="payment"]').forEach(radio => {
     radio.addEventListener('change', () => {
@@ -143,8 +144,24 @@
     });
   });
 
-  /* Set year */
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Store Customer Name, Order ID, and Order Details before submit
+  document.querySelector('form').addEventListener('submit', () => {
+    const name = document.getElementById('custName').value.trim();
+    sessionStorage.setItem('etCustomerName', name);
+
+    const randomId = Math.floor(10000 + Math.random() * 90000);
+    const orderId = `ET-${randomId}`;
+    sessionStorage.setItem('orderId', orderId);
+    document.getElementById('orderId').value = orderId;
+
+    let orderSummary = "";
+    Object.values(cart).forEach(item => {
+        orderSummary += `${item.name} × ${item.qty}\n`;
+    });
+    document.getElementById('orderDetails').value = orderSummary.trim();
+  });
 </script>
 </body>
 </html>
