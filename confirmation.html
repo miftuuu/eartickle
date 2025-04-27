@@ -6,25 +6,36 @@
   <title>Order Confirmed – Ear Tickle</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body{display:flex;justify-content:center;align-items:center;min-height:100vh;text-align:center;}
-    .card{background:var(--white);border:1px solid var(--brown-300);border-radius:12px;padding:2rem;max-width:500px;}
-    h1{font-family:'Playfair Display',serif;margin-bottom:1rem;}
-    p{font-size:1.1rem;line-height:1.5;}
+    body{display:flex;justify-content:center;align-items:center;min-height:100vh;text-align:center;background:var(--brown-100);}
+    .card{background:var(--white);border:1px solid var(--brown-300);border-radius:16px;padding:2rem;max-width:500px;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+    h1{font-family:'Playfair Display',serif;margin-bottom:1rem;color:var(--brown-900);}
+    p{font-size:1.1rem;line-height:1.5;color:var(--brown-700);}
+    .btn{background:var(--brown-700);color:var(--white);padding:.75rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:500;transition:.3s;display:inline-block;margin-top:1.5rem;}
+    .btn:hover{background:var(--brown-500);}
+    .order-id{font-size:1.2rem;margin:1rem 0;font-weight:bold;color:var(--brown-900);}
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Wohoo!</h1>
-    <p id="msg"></p>
-    <p style="margin-top:1.5rem;">If you have any queries, please leave us a message on our social media pages.</p>
-    <a href="index.html" class="btn" style="margin-top:1.5rem; display:inline-block;">Back to Home</a>
+    <div id="msg"></div>
+    <a href="index.html" class="btn">Back to Home</a>
   </div>
 
   <script>
     const name = sessionStorage.getItem('etCustomerName') || 'Valued Customer';
-    document.getElementById('msg').innerHTML = `Dear <strong>${name}</strong>,<br> Your order has been successfully confirmed. We're so excited for you to try our products. Thank you for shopping with us.`;
-    // optional: remove name from storage
+    const orderId = sessionStorage.getItem('orderId') || 'Unknown';
+
+    document.getElementById('msg').innerHTML = `
+      <p>Dear <strong>${name}</strong>,<br><br> 
+      Your order has been successfully confirmed!</p>
+      <p>Thank you for shopping with us! 💖</p>
+      <div class="order-id">Order ID: ${orderId}</div>
+      
+    `;
+
     sessionStorage.removeItem('etCustomerName');
+    sessionStorage.removeItem('orderId');
   </script>
 </body>
 </html>
